@@ -1,6 +1,12 @@
+import jnr.ffi.StructLayout
+import org.apache.tools.ant.types.resources.comparators.Date
+import org.gradle.internal.component.external.model.ComponentVariant
+
 buildscript {
 	repositories {
 		gradlePluginPortal()
+		maven { url "https://maven.aliyun.com/repository/spring-plugin" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -152,6 +158,9 @@ configure(allprojects) { project ->
 	}
 
 	repositories {
+		jcenter() {
+			url "http://jcenter.bintray.com/" // Could not find org.jetbrains.kotlin:kotlin-compiler-embeddable:1.2.71.
+		}
 		maven { url "https://repo.spring.io/libs-spring-framework-build" }
 	}
 
@@ -298,10 +307,10 @@ configure(rootProject) {
 		doLast() {
 			def gradleOpts = "-XX:MaxMetaspaceSize=1024m -Xmx1024m"
 			def gradleBatOpts = "$gradleOpts -XX:MaxHeapSize=256m"
-			File wrapperFile = file("gradlew")
+            File wrapperFile = file("gradlew")
 			wrapperFile.text = wrapperFile.text.replace("DEFAULT_JVM_OPTS=",
 					"GRADLE_OPTS=\"$gradleOpts \$GRADLE_OPTS\"\nDEFAULT_JVM_OPTS=")
-			File wrapperBatFile = file("gradlew.bat")
+            File wrapperBatFile = file("gradlew.bat")
 			wrapperBatFile.text = wrapperBatFile.text.replace("set DEFAULT_JVM_OPTS=",
 					"set GRADLE_OPTS=$gradleBatOpts %GRADLE_OPTS%\nset DEFAULT_JVM_OPTS=")
 		}
